@@ -1,0 +1,518 @@
+<AddIn name        = "Al Binding"
+       author      = "Mike Krueger"
+       copyright   = "prj:///doc/copyright.txt"
+       description = "Backing binding for Al"
+       addInManagerHidden = "preinstalled">
+	
+	<Manifest>
+		<Identity name = "ICSharpCode.AlBinding"/>
+		<!-- The AvalonEdit dependency is necessary for the context action option page -->
+		<Dependency addin = "ICSharpCode.AvalonEdit" />
+		<Dependency addin = "ICSharpCode.FormsDesigner" requirePreload = "true"/>
+	</Manifest>
+	
+	<Runtime>
+		<Import assembly = "AlBinding.dll">
+			<Doozer name="AlCodeActionProvider" class="AlBinding.Refactoring.AlCodeActionProviderDoozer"/>
+		</Import>
+		<Import assembly = ":ICSharpCode.SharpDevelop"/>
+		<Import assembly = ":ICSharpCode.NRefactory.Al"/> <!-- used for CSharpAmbience -->
+		<Import assembly = ":ICSharpCode.NRefactory.Al.Refactoring"/> <!-- used for issues and refactorings -->
+	</Runtime>
+	
+	<Path name = "/SharpDevelop/Workbench/Ambiences">
+		<Class id    = "Al"
+		       class = "ICSharpCode.NRefactory.Al.AlAmbience"/>
+	</Path>
+  <!-- ${res:ICSharpCode.SharpDevelop.Commands.VBConvertProjectToCSharp}
+	<Path name = "/SharpDevelop/Pads/ProjectBrowser/ContextMenu/ProjectActions/Convert">
+		<Condition name = "ProjectActive" activeproject="VB">
+			<MenuItem id = "VBToAlConverter"
+			          label = "Convert VB To Al"
+			          class = "AlBinding.VBToAlConverter"/>
+		</Condition>
+	</Path>
+	-->
+	<Path name = "/SharpDevelop/MSBuildEngine/CompileTaskNames">
+		<!-- Makes SharpDevelop show the text 'Compiling ProjectName...' when the task is started -->
+		<String id="msc" text = "msc"/>
+	</Path>
+	
+	<Path name = "/SharpDevelop/Workbench/FileFilter">
+		<FileFilter id = "Al"
+		            insertbefore="AllFiles"
+		            name = "${res:SharpDevelop.FileFilter.AlFiles}"
+		            extensions = "*.al"
+		            mimeType = "text/plain"/>
+	</Path>
+	
+	<Path name = "/SharpDevelop/Workbench/Combine/FileFilter">
+		<FileFilter id         = "AlProject"
+		            insertbefore="AllFiles"
+		            name       = "${res:SharpDevelop.FileFilter.AlPrjFiles} (*.alproj)"
+		            extensions = "*.alproj"/>
+	</Path>
+	
+	<Path name = "/SharpDevelop/Parser">
+		<Parser id    = "Al"
+		        supportedfilenamepattern = "\.(al)$"
+		        projectfileextension = ".alproj"
+		        class = "AlBinding.Parser.TParser"/>
+	</Path>
+	
+	<Path name = "/SharpDevelop/ViewContent/TextEditor/CodeCompletion">
+		<CodeCompletionBinding id = "Al" extensions = ".al" class = "AlBinding.Completion.AlCompletionBinding"/>
+	</Path>
+	
+	<Path name = "/SharpDevelop/BackendBindings/Templates">
+		<!-- The contents of the template categories is provided by the data/templates folder
+			in which SharpDevelop looks by default. We explicitly list the category only in order to assign
+			the sortOrder.
+		-->
+		<TemplateCategory id = "Al">
+			<TemplateCategory id = "${res:Templates.File.Categories.WindowsApplications}" sortOrder="10" />
+		</TemplateCategory>
+	</Path>
+	
+	<Path name="/SharpDevelop/Workbench/LanguageBindings">
+		<LanguageBinding
+			id="Al"
+			class="AlBinding.AlLanguageBinding"
+			extensions=".al" />
+	</Path>
+	
+	<Path name="/SharpDevelop/ViewContent/TextEditor/Extensions">
+		<TextEditorExtension
+			id="Al"
+			class="AlBinding.AlTextEditorExtension"
+			extensions=".al" />
+	</Path>
+	
+	<Path name = "/SharpDevelop/ViewContent/AvalonEdit/SyntaxModes"> 
+		<SyntaxMode id="Al" name="Al" extensions=".al" resource="AlBinding.Resources.Al-Semantic.xshd" />
+	</Path>
+	
+	<Path name="/SharpDevelop/ViewContent/AvalonEdit/Highlighters">
+		<Highlighter id="AlSemantic" extensions=".al" class="AlBinding.AlSemanticHighlighter" />
+	</Path>
+	
+	<Path path = "/SharpDevelop/BackendBindings/ProjectOptions/Al">
+		<OptionPanel id    = "Application"
+		             label = "${res:Dialog.ProjectOptions.ApplicationSettings}"
+		             class = "ICSharpCode.SharpDevelop.Gui.OptionPanels.ApplicationSettings"/>
+		<OptionPanel id    = "ReferencePaths"
+		             label = "${res:Dialog.ProjectOptions.ReferencePaths}"
+		             class = "ICSharpCode.SharpDevelop.Gui.OptionPanels.ReferencePaths"/>
+		<OptionPanel id    = "Signing"
+		             label = "${res:Dialog.ProjectOptions.Signing}"
+		             class = "ICSharpCode.SharpDevelop.Gui.OptionPanels.Signing"/>
+		<OptionPanel id    = "BuildEvents"
+		             label = "${res:Dialog.ProjectOptions.BuildEvents}"
+		             class = "ICSharpCode.SharpDevelop.Gui.OptionPanels.BuildEvents"/>
+		<OptionPanel id    = "BuildOptions"
+		             label = "${res:Dialog.ProjectOptions.BuildOptions}"
+		             class = "AlBinding.OptionPanels.BuildOptions"/>
+		<OptionPanel id    = "DebugOptions"
+		             label = "${res:Dialog.ProjectOptions.DebugOptions}"
+		             class = "ICSharpCode.SharpDevelop.Gui.OptionPanels.DebugOptions"/>
+		<OptionPanel id    = "AssemblyInfo"
+		             label = "${res:Dialog.ProjectOptions.AssemblyInfo}"
+		             class = "ICSharpCode.SharpDevelop.Gui.OptionPanels.AssemblyInfoPanel"/>
+		<!--<OptionPanel id    = "Publish"
+		             label = "${res:Dialog.ProjectOptions.Publish}"
+		             class = "ICSharpCode.SharpDevelop.Gui.OptionPanels.Publish"/>-->
+		<Include id = "AllManaged" path="/SharpDevelop/BackendBindings/ProjectOptions/AllManaged"/>
+		<OptionPanel id    = "CSharpProjectFormattingOptions"
+		             label = "${res:Dialog.ProjectOptions.CodeFormatting}"
+		             class = "AlBinding.OptionPanels.AlProjectFormattingOptionPanel"/>
+	</Path>
+	
+	<Path name = "/Workspace/Icons">
+		<!-- C# -->
+		<Icon id         = "AlPrj"
+		      language   = "Al"
+		      resource   = "Al.ProjectIcon"/>
+		
+		<Icon id         = "AlFile"
+		      extensions = ".al"
+		      resource   = "Al.FileIcon"/>
+	</Path>
+	
+	<Path path = "/SharpDevelop/Workbench/ProjectBindings">
+		<ProjectBinding id                   = "Al"
+		                guid                 = "{FAE04EC0-301F-11D3-BF4B-00F0CF79EFBC}"
+		                supportedextensions  = ".al"
+		                projectfileextension = ".alproj"
+		                class                = "AlBinding.AlProjectBinding" />
+	</Path>
+	
+	<Path path = "/SharpDevelop/Dialogs/OptionsDialog/CodingOptions">
+		<OptionPanel id    = "Al"
+		             insertafter = "Highlighting"
+		             label = "Al">
+			<OptionPanel id="Issues"
+			             label="${res:Dialog.Options.IDEOptions.CodingOptions.CodeIssues.Title}"
+			             class="AlBinding.Refactoring.IssueOptions"/>
+			<ContextActionOptionPanel id="ContextActions" path="/SharpDevelop/ViewContent/TextEditor/Al/ContextActions"/>
+			<OptionPanel id="Formatting"
+			             label="${res:Dialog.Options.IDEOptions.CodingOptions.CodeFormatting.Title}"
+			             class="AlBinding.OptionPanels.AlGlobalFormattingOptionPanel"/>
+		</OptionPanel>
+	</Path>
+	
+	<Path path = "/SharpDevelop/Dialogs/SolutionFormattingOptionsDialog">
+		<OptionPanel id="AlFormatting"
+		             label="Al"
+		             class="AlBinding.OptionPanels.AlSolutionFormattingOptionPanel"/>
+	</Path>
+	
+	<Path path = "/SharpDevelop/Workbench/MainMenu/Search">
+		<MenuItem id = "SearchForIssues"
+		          label="${res:XML.MainMenu.SearchMenu.SearchForIssues}"
+		          class="AlBinding.Refactoring.SearchForIssuesCommand"/>
+	</Path>
+	
+	<Path name="/SharpDevelop/ViewContent/AvalonEdit/SnippetElementProviders">
+		<Class id="ctor" class="AlBinding.Refactoring.InsertCtorSnippetRefactoring" />
+		<Class id="propall" class="AlBinding.Refactoring.CreateProperties" />
+		<!--<Class id="switch" class="AlBinding.Refactoring.SwitchSnippetProvider" /> -->
+	</Path>
+	
+	<Path path = "/SharpDevelop/ViewContent/TextEditor/Al/IssueProviders"> 
+		<Class class = "AlBinding.Refactoring.AlSyntaxIssue" />
+		<Class class = "AlBinding.Refactoring.SDRedundantUsingIssue" />
+    <Class class = "ICSharpCode.NRefactory.Al.BaseMethodCallWithDefaultParameterIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.AccessToStaticMemberViaDerivedTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.AdditionalOfTypeIssues" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ArrayCreationCanBeReplacedWithArrayInitializerIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.BaseMemberHasParamsIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.BaseMethodParameterNameMismatchIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.BitwiseOperatorOnEnumWithoutFlagsIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CallToObjectEqualsViaBaseIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CanBeReplacedWithTryCastAndCheckForNullIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CastExpressionOfIncompatibleTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CheckNamespaceIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CompareNonConstrainedGenericWithNullIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CompareOfFloatsByEqualityOperatorIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConditionalTernaryEqualBranchIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConditionIsAlwaysTrueOrFalseIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConstantConditionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConstantNullCoalescingConditionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertClosureToMethodGroupIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertConditionalTernaryToNullCoalescingIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertIfDoToWhileIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertIfStatementToConditionalTernaryExpressionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertIfStatementToNullCoalescingExpressionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertIfStatementToSwitchStatementIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertIfToAndExpressionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertIfToOrExpressionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertNullableToShortFormIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertToAutoPropertyIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertToConstantIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertToLambdaExpressionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertToStaticTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS0029InvalidConversionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS0126ReturnMustBeFollowedByAnyExpression" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS0127ReturnMustNotBeFollowedByAnyExpression" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS0152DuplicateCaseLabelValueIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS0169FieldIsNeverUsedIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS0183ExpressionIsAlwaysOfProvidedTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS0618UsageOfObsoleteMemberIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS0659ClassOverrideEqualsWithoutGetHashCode" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS0759RedundantPartialMethodIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS1573ParameterHasNoMatchingParamTagIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS1717AssignmentMadeToSameVariableIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.CS1729TypeHasNoConstructorWithNArgumentsIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.DelegateSubtractionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.DoNotCallOverridableMethodsInConstructorIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.DoubleNegationOperatorIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.EmptyConstructorIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.EmptyDestructorIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.EmptyEmbeddedStatementIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.EmptyGeneralCatchClauseIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.EmptyNamespaceIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.EmptyStatementIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.EnumUnderlyingTypeIsIntIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.EqualExpressionComparisonIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.EventUnsubscriptionViaAnonymousDelegateIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ExceptionRethrowIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ExplicitConversionInForEachIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ExpressionIsNeverOfProvidedTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.FieldCanBeMadeReadOnlyIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ForCanBeConvertedToForeachIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ForControlVariableIsNeverModifiedIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.FormatStringProblemIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ForStatementConditionIsTrueIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.FunctionNeverReturnsIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.InconsistentNamingIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.InvokeAsExtensionMethodIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.LocalVariableHidesMemberIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.LocalVariableNotUsedIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.LockThisIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.LongLiteralEndingLowerLIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.MemberCanBeMadeStaticIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.MemberHidesStaticFromOuterClassIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.MethodOverloadWithOptionalParameterIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.MissingInterfaceMemberImplementationIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.NegativeRelationalExpressionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.NonPublicMethodWithTestAttributeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.NonReadonlyReferencedInGetHashCodeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.NotImplementedExceptionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.NotResolvedInTextIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ObjectCreationAsStatementIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.OperatorIsCanBeUsedIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.OptionalParameterHierarchyMismatchIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.OptionalParameterRefOutIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ParameterCanBeDeclaredWithBaseTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ParameterHidesMemberIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ParameterOnlyAssignedIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.PartialMethodParameterNameMismatchIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.PartialTypeWithSinglePartIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.PolymorphicFieldLikeEventInvocationIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.PossibleAssignmentToReadonlyFieldIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.PossibleMistakenCallToGetTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ProhibitedModifiersIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.PublicConstructorInAbstractClassIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantAnonymousTypePropertyNameIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantArgumentDefaultValueIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantArgumentNameIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantAttributeParenthesesIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantBaseConstructorCallIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantBaseQualifierIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantBoolCompareIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantCaseLabelIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantCatchClauseIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantCheckBeforeAssignmentIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantCommaInArrayInitializerIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantComparisonWithNullIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantDefaultFieldInitializerIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantDelegateCreationIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantEmptyDefaultSwitchBranchIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantEmptyFinallyBlockIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantEnumerableCastCallIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantExplicitArrayCreationIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantExplicitArraySizeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantExplicitNullableCreationIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantExtendsListEntryIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantIfElseBlockIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantInternalIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantLambdaParameterTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantLambdaSignatureParenthesesIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantLogicalConditionalExpressionOperandIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantNameQualifierIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantObjectCreationArgumentListIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantObjectOrCollectionInitializerIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantOverridenMemberIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantParamsIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantPrivateIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantStringToCharArrayCallIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantTernaryExpressionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantThisQualifierIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantToStringCallForValueTypesIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantToStringCallIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RedundantUnsafeContextIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReferenceEqualsWithValueTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RemoveRedundantOrStatementIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithFirstOrDefaultIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithLastOrDefaultIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOfTypeAnyIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOfTypeCountIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOfTypeFirstIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOfTypeFirstOrDefaultIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOfTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOfTypeLastIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOfTypeLastOrDefaultIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOfTypeLongCountIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOfTypeSingleIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOfTypeSingleOrDefaultIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOfTypeWhereIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSimpleAssignmentIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToAnyIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToAverageIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToCountIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToFirstIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToFirstOrDefaultIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToLastIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToLastOrDefaultIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToLongCountIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToMinIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToMaxIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToSingleIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToSingleOrDefaultIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithSingleCallToSumIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithStringIsNullOrEmptyIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.RewriteIfReturnToReturnIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.SealedMemberInSealedClassIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.SimplifyConditionalTernaryExpressionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.SimplifyLinqExpressionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.StaticConstructorParameterIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.StaticEventSubscriptionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.StaticFieldInGenericTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.StringCompareIsCultureSpecificIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.StringCompareToIsCultureSpecificIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.StringEndsWithIsCultureSpecificIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.StringIndexOfIsCultureSpecificIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.StringLastIndexOfIsCultureSpecificIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.StringStartsWithIsCultureSpecificIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.SuggestUseVarKeywordEvidentIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ThreadStaticAtInstanceFieldIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.UnassignedReadonlyFieldIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.UnreachableCodeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.UnusedAnonymousMethodSignatureIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.UnusedLabelIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.UnusedParameterIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.UnusedTypeParameterIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.UseArrayCreationExpressionIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.UseIsOperatorIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.UseMethodAnyIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.UseMethodIsInstanceOfTypeIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.ValueParameterNotUsedIssue" />
+		<Class class = "ICSharpCode.NRefactory.Al.Refactoring.XmlDocIssue" />
+	</Path>
+	
+	<Path path = "/SharpDevelop/ViewContent/TextEditor/Al/ContextActions">
+		<!-- In this path, you can add SD context action providers using <Class>,
+		     or you can add NR5 code action providers using <CSharpCodeActionProvider> -->
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.AbstractAndVirtualConversionAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.AddAnotherAccessorAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.AddArgumentNameAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.AddBracesAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.AddCatchTypeAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.AddExceptionDescriptionAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.AddOptionalParameterToInvocationAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.AddUsingAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.AutoLinqSumAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ChangeAccessModifierAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CheckIfParameterIsNullAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ComputeConstantValueAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertAnonymousDelegateToLambdaAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertAssignmentToIfAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertAsToCastAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertBitwiseFlagComparisonToHasFlagsAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertCastToAsAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertDecToHexAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertDoWhileToWhileLoopAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertEqualityOperatorToEqualsAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertEqualsToEqualityOperatorAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertExplicitToImplicitImplementationAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertForeachToForAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertForToWhileAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertHasFlagsToBitwiseFlagComparisonAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertHexToDecAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertIfStatementToConditionalTernaryExpressionAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertIfStatementToNullCoalescingExpressionAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertIfStatementToReturnStatementAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertIfStatementToSwitchStatementAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertImplicitToExplicitImplementationAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertInitializerToExplicitInitializationsAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertLambdaBodyExpressionToStatementAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertLambdaBodyStatementToExpressionAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertLambdaToAnonymousDelegateAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertMethodGroupToAnonymousMethodAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertMethodGroupToLambdaAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertMultiplyToShiftAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertNullCoalescingToConditionalExpressionAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertReturnStatementToIfAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertShiftToMultiplyAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertSwitchToIfAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertToInitializerAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ConvertWhileToDoWhileLoopAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CopyCommentsFromBase" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CopyCommentsFromInterface" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateBackingStoreAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateChangedEventAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateClassDeclarationAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateConstructorDeclarationAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateCustomEventImplementationAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateDelegateAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateEnumValue" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateEventInvocatorAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateFieldAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateIndexerAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateLocalVariableAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateMethodDeclarationAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreateOverloadWithoutParameterAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CreatePropertyAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CS1520MethodMustHaveAReturnTypeAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.CS1105ExtensionMethodMustBeDeclaredStaticAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.DeclareLocalVariableAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ExtensionMethodInvocationToStaticMethodInvocationAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ExtractAnonymousMethodAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ExtractFieldAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ExtractMethod.ExtractMethodAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ExtractWhileConditionToInternalIfStatementAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.FlipEqualsTargetAndArgumentAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.FlipOperatorArgumentsAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.GenerateGetterAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.GeneratePropertyAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.GenerateSwitchLabelsAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ImplementAbstractMembersAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ImplementInterfaceAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ImplementInterfaceExplicitAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ImplementNotImplementedProperty" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.InlineLocalVariableAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.InsertAnonymousMethodSignatureAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.IntroduceConstantAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.IntroduceFormatItemAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.InvertConditionalOperatorAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.InvertIfAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.InvertIfAndSimplify" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.InvertLogicalExpressionAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.IterateViaForeachAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.JoinDeclarationAndAssignmentAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.JoinStringAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.LinqFluentToQueryAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.LinqQueryToFluentAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.MergeNestedIfAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.MoveToOuterScopeAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.NegateIsExpressionAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.NegateRelationalExpressionAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.PutInsideUsingAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.RemoveBackingStoreAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.RemoveBracesAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.RemoveRedundantCatchTypeAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.RemoveRegionAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceAssignmentWithPostfixExpressionAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceEmptyStringAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceOperatorAssignmentWithAssignmentAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ReplacePostfixExpressionWithAssignmentAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ReplaceWithOperatorAssignmentAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.ReverseDirectionForForLoopAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.SimplifyIfFlowAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.SimplifyIfInLoopsFlowAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.SortUsingsAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.SplitDeclarationAndAssignmentAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.SplitDeclarationListAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.SplitIfAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.SplitStringAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.UseAsAndNullCheckAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.UseExplicitTypeAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.UseStringFormatAction" />
+		<CSharpCodeActionProvider class = "ICSharpCode.NRefactory.Al.Refactoring.UseVarKeywordAction" />
+		<Class class="AlBinding.Refactoring.MoveTypeToFileContextAction" />
+		<Class class="AlBinding.Refactoring.RenameFileToMatchTypeNameContextAction" />
+		<Class class="AlBinding.Refactoring.ParamRangeCheckContextAction" />
+		<Class class="AlBinding.Refactoring.ConvertInterfaceToAbstractClassContextAction" />
+	</Path>
+	
+	<Path name = "/SharpDevelop/Workbench/DisplayBindings">
+		<DisplayBinding id    = "AlFormsDesigner"
+		                type  = "Secondary"
+		                class = "AlBinding.FormsDesigner.FormsDesignerSecondaryDisplayBinding"
+		                fileNamePattern = "\.al$"/>
+	</Path>
+  <!-- 
+		Register path to SharpDevelop.Build.Mono.*.targets for the MSBuild engine.
+		SharpDevelop.Build.Mono.*.targets is in the Mono.AddIn directory 
+    ${AddInPath:AlBinding}
+	-->
+  <Path name="/SharpDevelop/MSBuildEngine/AdditionalProperties">
+    <String id="MonoBuildTasksPath" text="${AddInPath:AlBinding}"/>
+  </Path>
+
+  <!-- Autostart command for initialization -->
+	<Path name = "/SharpDevelop/Autostart">
+		<Class id    = "AlFormattingOptionsPoliciesInitCommand"
+		       class = "AlBinding.FormattingStrategy.AlFormattingOptionsPoliciesInitCommand"/>
+	</Path>
+</AddIn>

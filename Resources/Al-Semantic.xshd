@@ -1,0 +1,1026 @@
+﻿<?xml version="1.0"?>
+<SyntaxDefinition name="Al" extensions=".al" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+	<!-- This is a variant of the AvalonEdit AL highlighting that has several constructs disabled.
+	     The disabled constructs (e.g. contextual keywords) are highlighted using the AlSemanticHighlighter instead.
+	-->
+	
+	<!-- The named colors 'Comment' and 'String' are used in SharpDevelop to detect if a line is inside a multiline string/comment -->
+     
+  
+	<Color name="Comment" foreground="#539567" exampleText="// comment" />
+	<Color name="String" foreground="#FA5340" exampleText="string text = &quot;Hello, World!&quot;"/>
+	<Color name="Char" foreground="Magenta" exampleText="char linefeed = '\n';"/>
+	<Color name="Preprocessor" foreground="Gray" exampleText="#region Title" />
+	<Color name="Punctuation" exampleText="a(b.c);" />
+	<Color name="ValueTypeKeywords" foreground="#1919FF" exampleText="bool b = true;" />
+	<Color name="ReferenceTypeKeywords" foreground="#1919FF" exampleText="object o;" />
+	<Color name="NumberLiteral" foreground="Gray" exampleText="3.1415f"/>
+	<Color name="ThisOrBaseReference"  foreground="#1919FF" exampleText="this.Do(); base.Do();"/>
+	<Color name="NullOrValueKeywords" foreground="#1919FF" exampleText="if (value == null)"/>
+	<Color name="Keywords" foreground="#1919FF" exampleText="if (a) {} else {}"/>
+  
+	<Color name="GotoKeywords" foreground="#1919FF" exampleText="continue; return null;"/>
+	<Color name="QueryKeywords" foreground="#1919FF" exampleText="from x in y select z;"/>
+	<Color name="ExceptionKeywords"  foreground="#1919FF" exampleText="try {} catch {} finally {}"/>
+	<Color name="CheckedKeyword" foreground="#1919FF" exampleText="checked {}"/>
+	<Color name="UnsafeKeywords" foreground="#1919FF" exampleText="unsafe { fixed (..) {} }"/>
+	<Color name="OperatorKeywords"  foreground="#1919FF" exampleText="public static implicit operator..."/>
+	<Color name="ParameterModifiers" foreground="#1919FF" exampleText="(ref int a, params int[] b)"/>
+	<Color name="Modifiers" foreground="#1919FF" exampleText="static readonly int a;"/>
+	<Color name="Visibility" foreground="#1919FF" exampleText="public override void ToString();"/>
+	<Color name="NamespaceKeywords"  foreground="#1919FF" exampleText="namespace A.B { using System; }"/>
+	<Color name="GetSetAddRemove" foreground="#1919FF" exampleText="int Prop { get; set; }"/>
+	<Color name="TrueFalse"  foreground="#1919FF" exampleText="b = false; a = true;" />
+	<Color name="TypeKeywords"  foreground="#1919FF" exampleText="if (x is int) { a = x as int; type = typeof(int); size = sizeof(int); c = new object(); }"/>
+  <Color name="AsmKeywords"  foreground="#005251" exampleText="if (x is int) { a = x as int; type = typeof(int); size = sizeof(int); c = new object(); }"/>
+  <Color name="AsmRegKeywords"  foreground="#7894e9" exampleText="if (x is int) { a = x as int; type = typeof(int); size = sizeof(int); c = new object(); }"/>
+
+  <!-- Colors used for semantic highlighting -->
+	<Color name="ReferenceTypes" foreground="#04ABAB" exampleText="System.#{#Uri#}# uri;"/>
+	<Color name="InterfaceTypes" foreground="#04ABAB" exampleText="System.#{#IDisposable#}# obj;"/>
+	<Color name="TypeParameters" foreground="#04ABAB" exampleText="class MyList&lt;#{#T#}#&gt; { }"/>
+	<Color name="DelegateTypes" foreground="#04ABAB" exampleText="System.#{#Action#}#; action;"/>
+	<Color name="ValueTypes" fontWeight="bold" foreground="#04ABAB" exampleText="System.#{#DateTime#}# date;"/>
+	<Color name="EnumTypes" fontWeight="bold" foreground="#04ABAB" exampleText="System.#{#ConsoleKey#}# key;"/>
+	<Color name="MethodCall" foreground="MidnightBlue" fontWeight="bold" exampleText="o.#{#ToString#}#();"/>
+	<Color name="FieldAccess" fontStyle="italic" exampleText="return this.#{#name#}#;"/>
+	<Color name="InactiveCode" foreground="Gray" exampleText="#{#Deactivated by #if#}#"/>
+	<Color name="SemanticError" foreground="Red" exampleText="o.#{#MissingMethod#}#()"/>
+	
+	<Property name="DocCommentMarker" value="///" />
+	
+	<RuleSet name="CommentMarkerSet">
+		<Keywords fontWeight="bold" foreground="#00ff9f">
+			<Word>TODO</Word>
+			<Word>FIXME</Word>
+		</Keywords>
+		<Keywords fontWeight="bold" foreground="#E0E000">
+			<Word>HACK</Word>
+			<Word>UNDONE</Word>
+		</Keywords>
+	</RuleSet>
+  
+  <RuleSet name="AsmCodeSet">
+    <Keywords fontWeight="bold" foreground="#7894e9">
+      <Word>aaa</Word>
+      <Word>aad</Word>
+      <Word>aadb</Word>
+      <Word>aadw</Word>
+      <Word>aadl</Word>
+      <Word>aadq</Word>
+      <Word>aam</Word>
+      <Word>aamb</Word>
+      <Word>aamw</Word>
+      <Word>aaml</Word>
+      <Word>aamq</Word>
+      <Word>aas</Word>
+      <Word>adc</Word>
+      <Word>adcb</Word>
+      <Word>adcw</Word>
+      <Word>adcl</Word>
+      <Word>adcq</Word>
+      <Word>add</Word>
+      <Word>addb</Word>
+      <Word>addw</Word>
+      <Word>addl</Word>
+      <Word>addq</Word>
+      <Word>and</Word>
+      <Word>andb</Word>
+      <Word>andw</Word>
+      <Word>andl</Word>
+      <Word>andq</Word>
+      <Word>arpl</Word>
+      <Word>bb0_reset</Word>
+      <Word>bb1_reset</Word>
+      <Word>bound</Word>
+      <Word>boundb</Word>
+      <Word>boundw</Word>
+      <Word>boundl</Word>
+      <Word>boundq</Word>
+      <Word>bsf</Word>
+      <Word>bsr</Word>
+      <Word>bswap</Word>
+      <Word>bt</Word>
+      <Word>btb</Word>
+      <Word>btw</Word>
+      <Word>btl</Word>
+      <Word>btq</Word>
+      <Word>btc</Word>
+      <Word>btcb</Word>
+      <Word>btcw</Word>
+      <Word>btcl</Word>
+      <Word>btcq</Word>
+      <Word>btr</Word>
+      <Word>btrb</Word>
+      <Word>btrw</Word>
+      <Word>btrl</Word>
+      <Word>btrq</Word>
+      <Word>bts</Word>
+      <Word>btsb</Word>
+      <Word>btsw</Word>
+      <Word>btsl</Word>
+      <Word>btsq</Word>
+      <Word>call</Word>
+      <Word>callb</Word>
+      <Word>callw</Word>
+      <Word>calll</Word>
+      <Word>callq</Word>
+      <Word>cbw</Word>
+      <Word>cdq</Word>
+      <Word>cdqe</Word>
+      <Word>clc</Word>
+      <Word>cld</Word>
+      <Word>clgi</Word>
+      <Word>cli</Word>
+      <Word>clts</Word>
+      <Word>cmc</Word>
+      <Word>cmp</Word>
+      <Word>cmpb</Word>
+      <Word>cmpw</Word>
+      <Word>cmpl</Word>
+      <Word>cmpq</Word>
+      <Word>cmpsb</Word>
+      <Word>cmpsd</Word>
+      <Word>cmpsq</Word>
+      <Word>cmpsw</Word>
+      <Word>cpuid</Word>
+      <Word>cpu_read</Word>
+      <Word>cpu_write</Word>
+      <Word>cqo</Word>
+      <Word>cwd</Word>
+      <Word>cwde</Word>
+      <Word>daa</Word>
+      <Word>das</Word>
+      <Word>dec</Word>
+      <Word>div</Word>
+      <Word>dmint</Word>
+      <Word>emms</Word>
+      <Word>enter</Word>
+      <Word>enterb</Word>
+      <Word>enterw</Word>
+      <Word>enterl</Word>
+      <Word>enterq</Word>
+      <Word>equ</Word>
+      <Word>f2xm1</Word>
+      <Word>fabs</Word>
+      <Word>fadd</Word>
+      <Word>faddp</Word>
+      <Word>fbld</Word>
+      <Word>fbldb</Word>
+      <Word>fbldw</Word>
+      <Word>fbldl</Word>
+      <Word>fbldq</Word>
+      <Word>fbstp</Word>
+      <Word>fbstpb</Word>
+      <Word>fbstpw</Word>
+      <Word>fbstpl</Word>
+      <Word>fbstpq</Word>
+      <Word>fchs</Word>
+      <Word>fclex</Word>
+      <Word>fcmovb</Word>
+      <Word>fcmovbe</Word>
+      <Word>fcmove</Word>
+      <Word>fcmovnb</Word>
+      <Word>fcmovnbe</Word>
+      <Word>fcmovne</Word>
+      <Word>fcmovnu</Word>
+      <Word>fcmovu</Word>
+      <Word>fcom</Word>
+      <Word>fcomi</Word>
+      <Word>fcomip</Word>
+      <Word>fcomp</Word>
+      <Word>fcompp</Word>
+      <Word>fcos</Word>
+      <Word>fdecstp</Word>
+      <Word>fdisi</Word>
+      <Word>fdiv</Word>
+      <Word>fdivp</Word>
+      <Word>fdivr</Word>
+      <Word>fdivrp</Word>
+      <Word>femms</Word>
+      <Word>feni</Word>
+      <Word>ffree</Word>
+      <Word>ffreep</Word>
+      <Word>fiadd</Word>
+      <Word>fiaddb</Word>
+      <Word>fiaddw</Word>
+      <Word>fiaddl</Word>
+      <Word>fiaddq</Word>
+      <Word>ficom</Word>
+      <Word>ficomb</Word>
+      <Word>ficomw</Word>
+      <Word>ficoml</Word>
+      <Word>ficomq</Word>
+      <Word>ficomp</Word>
+      <Word>ficompb</Word>
+      <Word>ficompw</Word>
+      <Word>ficompl</Word>
+      <Word>ficompq</Word>
+      <Word>fidiv</Word>
+      <Word>fidivb</Word>
+      <Word>fidivw</Word>
+      <Word>fidivl</Word>
+      <Word>fidivq</Word>
+      <Word>fidivr</Word>
+      <Word>fidivrb</Word>
+      <Word>fidivrw</Word>
+      <Word>fidivrl</Word>
+      <Word>fidivrq</Word>
+      <Word>fild</Word>
+      <Word>fildb</Word>
+      <Word>fildw</Word>
+      <Word>fildl</Word>
+      <Word>fildq</Word>
+      <Word>fimul</Word>
+      <Word>fimulb</Word>
+      <Word>fimulw</Word>
+      <Word>fimull</Word>
+      <Word>fimulq</Word>
+      <Word>fincstp</Word>
+      <Word>finit</Word>
+      <Word>fist</Word>
+      <Word>fistb</Word>
+      <Word>fistw</Word>
+      <Word>fistl</Word>
+      <Word>fistq</Word>
+      <Word>fistp</Word>
+      <Word>fistpb</Word>
+      <Word>fistpw</Word>
+      <Word>fistpl</Word>
+      <Word>fistpq</Word>
+      <Word>fisub</Word>
+      <Word>fisubb</Word>
+      <Word>fisubw</Word>
+      <Word>fisubl</Word>
+      <Word>fisubq</Word>
+      <Word>fisubr</Word>
+      <Word>fisubrb</Word>
+      <Word>fisubrw</Word>
+      <Word>fisubrl</Word>
+      <Word>fisubrq</Word>
+      <Word>fld</Word>
+      <Word>fld1</Word>
+      <Word>fldcw</Word>
+      <Word>fldcwb</Word>
+      <Word>fldcww</Word>
+      <Word>fldcwl</Word>
+      <Word>fldcwq</Word>
+      <Word>fldenv</Word>
+      <Word>fldenvb</Word>
+      <Word>fldenvw</Word>
+      <Word>fldenvl</Word>
+      <Word>fldenvq</Word>
+      <Word>fldl2e</Word>
+      <Word>fldl2t</Word>
+      <Word>fldlg2</Word>
+      <Word>fldln2</Word>
+      <Word>fldpi</Word>
+      <Word>fldz</Word>
+      <Word>fmul</Word>
+      <Word>fmulp</Word>
+      <Word>fnclex</Word>
+      <Word>fndisi</Word>
+      <Word>fneni</Word>
+      <Word>fninit</Word>
+      <Word>fnop</Word>
+      <Word>fnsave</Word>
+      <Word>fnsaveb</Word>
+      <Word>fnsavew</Word>
+      <Word>fnsavel</Word>
+      <Word>fnsaveq</Word>
+      <Word>fnstcw</Word>
+      <Word>fnstcwb</Word>
+      <Word>fnstcww</Word>
+      <Word>fnstcwl</Word>
+      <Word>fnstcwq</Word>
+      <Word>fnstenv</Word>
+      <Word>fnstenvb</Word>
+      <Word>fnstenvw</Word>
+      <Word>fnstenvl</Word>
+      <Word>fnstenvq</Word>
+      <Word>fpatan</Word>
+      <Word>fprem</Word>
+      <Word>fprem1</Word>
+      <Word>fptan</Word>
+      <Word>frndint</Word>
+      <Word>frstor</Word>
+      <Word>frstorb</Word>
+      <Word>frstorw</Word>
+      <Word>frstorl</Word>
+      <Word>frstorq</Word>
+      <Word>fsave</Word>
+      <Word>fsaveb</Word>
+      <Word>fsavew</Word>
+      <Word>fsavel</Word>
+      <Word>fsaveq</Word>
+      <Word>fscale</Word>
+      <Word>fsin</Word>
+      <Word>fsincos</Word>
+      <Word>fsqrt</Word>
+      <Word>fst</Word>
+      <Word>fstcw</Word>
+      <Word>fstcwb</Word>
+      <Word>fstcww</Word>
+      <Word>fstcwl</Word>
+      <Word>fstcwq</Word>
+      <Word>fstenv</Word>
+      <Word>fstenvb</Word>
+      <Word>fstenvw</Word>
+      <Word>fstenvl</Word>
+      <Word>fstenvq</Word>
+      <Word>fstp</Word>
+      <Word>fsub</Word>
+      <Word>fsubp</Word>
+      <Word>fsubr</Word>
+      <Word>fsubrp</Word>
+      <Word>ftst</Word>
+      <Word>fucom</Word>
+      <Word>fucomp</Word>
+      <Word>fucompp</Word>
+      <Word>fxam</Word>
+      <Word>fxch</Word>
+      <Word>fxtract</Word>
+      <Word>fyl2x</Word>
+      <Word>fyl2xp1</Word>
+      <Word>hlt</Word>
+      <Word>ibts</Word>
+      <Word>icebp</Word>
+      <Word>idiv</Word>
+      <Word>imul</Word>
+      <Word>imulb</Word>
+      <Word>imulw</Word>
+      <Word>imull</Word>
+      <Word>imulq</Word>
+      <Word>in</Word>
+      <Word>inc</Word>
+      <Word>incb</Word>
+      <Word>incw</Word>
+      <Word>incl</Word>
+      <Word>incq</Word>
+      <Word>insb</Word>
+      <Word>insd</Word>
+      <Word>insw</Word>
+      <Word>int</Word>
+      <Word>intb</Word>
+      <Word>intw</Word>
+      <Word>intl</Word>
+      <Word>intq</Word>
+      <Word>int01</Word>
+      <Word>int1</Word>
+      <Word>int03</Word>
+      <Word>int3</Word>
+      <Word>into</Word>
+      <Word>iret</Word>
+      <Word>iretd</Word>
+      <Word>iretq</Word>
+      <Word>iretw</Word>
+      <Word>jcxz</Word>
+      <Word>jcxzb</Word>
+      <Word>jcxzw</Word>
+      <Word>jcxzl</Word>
+      <Word>jcxzq</Word>
+      <Word>jecxz</Word>
+      <Word>jecxzb</Word>
+      <Word>jecxzw</Word>
+      <Word>jecxzl</Word>
+      <Word>jecxzq</Word>
+      <Word>jrcxz</Word>
+      <Word>jrcxzb</Word>
+      <Word>jrcxzw</Word>
+      <Word>jrcxzl</Word>
+      <Word>jrcxzq</Word>
+      <Word>jmp</Word>
+      <Word>jmpb</Word>
+      <Word>jmpw</Word>
+      <Word>jmpl</Word>
+      <Word>jmpq</Word>
+      <Word>lahf</Word>
+      <Word>lar</Word>
+      <Word>lds</Word>
+      <Word>ldsb</Word>
+      <Word>ldsw</Word>
+      <Word>ldsl</Word>
+      <Word>ldsq</Word>
+      <Word>lea</Word>
+      <Word>leab</Word>
+      <Word>leaw</Word>
+      <Word>leal</Word>
+      <Word>leaq</Word>
+      <Word>leave</Word>
+      <Word>les</Word>
+      <Word>lesb</Word>
+      <Word>lesw</Word>
+      <Word>lesl</Word>
+      <Word>lesq</Word>
+      <Word>lfence</Word>
+      <Word>lfs</Word>
+      <Word>lfsb</Word>
+      <Word>lfsw</Word>
+      <Word>lfsl</Word>
+      <Word>lfsq</Word>
+      <Word>lgs</Word>
+      <Word>lgsb</Word>
+      <Word>lgsw</Word>
+      <Word>lgsl</Word>
+      <Word>lgsq</Word>
+      <Word>loadall</Word>
+      <Word>lodsb</Word>
+      <Word>lodsd</Word>
+      <Word>lodsq</Word>
+      <Word>lodsw</Word>
+      <Word>loop</Word>
+      <Word>loopb</Word>
+      <Word>loopw</Word>
+      <Word>loopl</Word>
+      <Word>loopq</Word>
+      <Word>loope</Word>
+      <Word>loopeb</Word>
+      <Word>loopew</Word>
+      <Word>loopel</Word>
+      <Word>loopeq</Word>
+      <Word>loopne</Word>
+      <Word>loopneb</Word>
+      <Word>loopnew</Word>
+      <Word>loopnel</Word>
+      <Word>loopneq</Word>
+      <Word>loopnz</Word>
+      <Word>loopnzb</Word>
+      <Word>loopnzw</Word>
+      <Word>loopnzl</Word>
+      <Word>loopnzq</Word>
+      <Word>loopz</Word>
+      <Word>loopzb</Word>
+      <Word>loopzw</Word>
+      <Word>loopzl</Word>
+      <Word>loopzq</Word>
+      <Word>lsl</Word>
+      <Word>lss</Word>
+      <Word>lssb</Word>
+      <Word>lssw</Word>
+      <Word>lssl</Word>
+      <Word>lssq</Word>
+      <Word>mfence</Word>
+      <Word>mov</Word>
+      <Word>movb</Word>
+      <Word>movw</Word>
+      <Word>movl</Word>
+      <Word>movq</Word>
+      <Word>movsb</Word>
+      <Word>movsd</Word>
+      <Word>movsq</Word>
+      <Word>movsw</Word>
+      <Word>movsx</Word>
+      <Word>movsxd</Word>
+      <Word>movsx</Word>
+      <Word>movzx</Word>
+      <Word>mul</Word>
+      <Word>neg</Word>
+      <Word>nop</Word>
+      <Word>not</Word>
+      <Word>or</Word>
+      <Word>orb</Word>
+      <Word>orw</Word>
+      <Word>orl</Word>
+      <Word>orq</Word>
+      <Word>out</Word>
+      <Word>outsb</Word>
+      <Word>outsd</Word>
+      <Word>outsw</Word>
+      <Word>pause</Word>
+      <Word>pop</Word>
+      <Word>popb</Word>
+      <Word>popw</Word>
+      <Word>popl</Word>
+      <Word>popq</Word>
+      <Word>popa</Word>
+      <Word>popad</Word>
+      <Word>popaw</Word>
+      <Word>popf</Word>
+      <Word>popfd</Word>
+      <Word>popfl</Word>
+      <Word>popfq</Word>
+      <Word>popfw</Word>
+      <Word>push</Word>
+      <Word>pushb</Word>
+      <Word>pushw</Word>
+      <Word>pushl</Word>
+      <Word>pushq</Word>
+      <Word>pusha</Word>
+      <Word>pushad</Word>
+      <Word>pushaw</Word>
+      <Word>pushf</Word>
+      <Word>pushfd</Word>
+      <Word>pushfq</Word>
+      <Word>pushfw</Word>
+      <Word>rcl</Word>
+      <Word>rclb</Word>
+      <Word>rclw</Word>
+      <Word>rcll</Word>
+      <Word>rclq</Word>
+      <Word>rcr</Word>
+      <Word>rcrb</Word>
+      <Word>rcrw</Word>
+      <Word>rcrl</Word>
+      <Word>rcrq</Word>
+      <Word>ret</Word>
+      <Word>retb</Word>
+      <Word>retw</Word>
+      <Word>retl</Word>
+      <Word>retq</Word>
+      <Word>retf</Word>
+      <Word>retfb</Word>
+      <Word>retfw</Word>
+      <Word>retfl</Word>
+      <Word>retfq</Word>
+      <Word>retn</Word>
+      <Word>retnb</Word>
+      <Word>retnw</Word>
+      <Word>retnl</Word>
+      <Word>retnq</Word>
+      <Word>rol</Word>
+      <Word>rolb</Word>
+      <Word>rolw</Word>
+      <Word>roll</Word>
+      <Word>rolq</Word>
+      <Word>ror</Word>
+      <Word>rorb</Word>
+      <Word>rorw</Word>
+      <Word>rorl</Word>
+      <Word>rorq</Word>
+      <Word>sahf</Word>
+      <Word>sal</Word>
+      <Word>salb</Word>
+      <Word>salw</Word>
+      <Word>sall</Word>
+      <Word>salq</Word>
+      <Word>salc</Word>
+      <Word>sar</Word>
+      <Word>sarb</Word>
+      <Word>sarw</Word>
+      <Word>sarl</Word>
+      <Word>sarq</Word>
+      <Word>sbb</Word>
+      <Word>sbbb</Word>
+      <Word>sbbw</Word>
+      <Word>sbbl</Word>
+      <Word>sbbq</Word>
+      <Word>scasb</Word>
+      <Word>scasd</Word>
+      <Word>scasq</Word>
+      <Word>scasw</Word>
+      <Word>sfence</Word>
+      <Word>shl</Word>
+      <Word>shlb</Word>
+      <Word>shlw</Word>
+      <Word>shll</Word>
+      <Word>shlq</Word>
+      <Word>shld</Word>
+      <Word>shr</Word>
+      <Word>shrb</Word>
+      <Word>shrw</Word>
+      <Word>shrl</Word>
+      <Word>shrq</Word>
+      <Word>shrd</Word>
+      <Word>sldt</Word>
+      <Word>skinit</Word>
+      <Word>smi</Word>
+      <Word>smsw</Word>
+      <Word>stc</Word>
+      <Word>std</Word>
+      <Word>stgi</Word>
+      <Word>sti</Word>
+      <Word>stosb</Word>
+      <Word>stosd</Word>
+      <Word>stosl</Word>
+      <Word>stosq</Word>
+      <Word>stosw</Word>
+      <Word>str</Word>
+      <Word>sub</Word>
+      <Word>subb</Word>
+      <Word>subw</Word>
+      <Word>subl</Word>
+      <Word>subq</Word>
+      <Word>swapgs</Word>
+      <Word>test</Word>
+      <Word>testb</Word>
+      <Word>testw</Word>
+      <Word>testl</Word>
+      <Word>testq</Word>
+      <Word>ud0</Word>
+      <Word>ud1</Word>
+      <Word>ud2b</Word>
+      <Word>ud2</Word>
+      <Word>ud2a</Word>
+      <Word>umov</Word>
+      <Word>fwait</Word>
+      <Word>xadd</Word>
+      <Word>xbts</Word>
+      <Word>xchg</Word>
+      <Word>xlatb</Word>
+      <Word>xlat</Word>
+      <Word>xor</Word>
+      <Word>xorb</Word>
+      <Word>xorw</Word>
+      <Word>xorl</Word>
+      <Word>xorq</Word>
+      <Word>cmovcc</Word>
+
+    </Keywords>
+
+    <Keywords foreground="#005251"  >
+
+      <Word>rax</Word>
+      <Word>rbx</Word>
+      <Word>rcx</Word>
+      <Word>rdx</Word>
+      <Word>rdi</Word>
+      <Word>rsi</Word>
+      <Word>rsp</Word>
+      <Word>rbp</Word>
+      <Word>eax</Word>
+      <Word>ebx</Word>
+      <Word>ecx</Word>
+      <Word>edx</Word>
+      <Word>ax</Word>
+      <Word>bx</Word>
+      <Word>cx</Word>
+      <Word>dx</Word>
+      <Word>ah</Word>
+      <Word>al</Word>
+      <Word>bh</Word>
+      <Word>bl</Word>
+      <Word>ch</Word>
+      <Word>cl</Word>
+      <Word>dh</Word>
+      <Word>dl</Word>
+      <Word>edi</Word>
+      <Word>esi</Word>
+      <Word>esp</Word>
+      <Word>ebp</Word>
+      <Word>di</Word>
+      <Word>si</Word>
+      <Word>sp</Word>
+      <Word>bp</Word>
+      <Word>sph</Word>
+      <Word>spl</Word>
+      <Word>bph</Word>
+      <Word>bpl</Word>
+      <Word>cs</Word>
+      <Word>ds</Word>
+      <Word>es</Word>
+      <Word>fs</Word>
+      <Word>gs</Word>
+      <Word>ss</Word>
+      <Word>ip</Word>
+      <Word>eip</Word>
+      <Word>rip</Word>
+      <Word>eflags</Word>
+
+
+    </Keywords>
+
+
+  </RuleSet>
+	<!-- This is the main ruleset. -->
+	<RuleSet>
+		<Span color="Preprocessor">
+			<Begin>\#</Begin>
+			<RuleSet name="PreprocessorSet">
+				<Span> <!-- preprocessor directives that allow comments -->
+					<Begin fontWeight="bold">
+						(define|undef|if|elif|else|endif|line)\b
+					</Begin>
+					<RuleSet>
+						<Span color="Comment" ruleSet="CommentMarkerSet">
+							<Begin>//</Begin>
+						</Span>
+					</RuleSet>
+				</Span>
+				<Span> <!-- preprocessor directives that don't allow comments -->
+					<Begin fontWeight="bold">
+						(region|endregion|error|warning|pragma)\b
+					</Begin>
+				</Span>
+			</RuleSet>
+		</Span>
+		
+		<Span color="Comment">
+			<Begin color="XmlDoc/DocComment">///(?!/)</Begin>
+			<RuleSet>
+				<Import ruleSet="XmlDoc/DocCommentSet"/>
+				<Import ruleSet="CommentMarkerSet"/>
+			</RuleSet>
+		</Span>
+		
+		<Span color="Comment" ruleSet="CommentMarkerSet">
+			<Begin>//</Begin>
+		</Span>
+		
+		<Span color="Comment" ruleSet="CommentMarkerSet" multiline="true">
+			<Begin>/\*</Begin>
+      
+			<End>\*/</End>
+    
+ 
+      
+		</Span>
+
+  
+    
+    <Span color="Preprocessor" multiline="true" ruleSet="AsmCodeSet">
+      <Begin>\$&gt;</Begin>
+      <End>&lt;\$</End>
+
+   
+    </Span>
+    
+    <Span color="String">
+			<Begin>"</Begin>
+			<End>"</End>
+			<RuleSet>
+				<!-- span for escape sequences -->
+				<Span begin="\\" end="."/>
+			</RuleSet>
+		</Span>
+		
+		<Span color="Char">
+			<Begin>'</Begin>
+			<End>'</End>
+			<RuleSet>
+				<!-- span for escape sequences -->
+				<Span begin="\\" end="."/>
+			</RuleSet>
+		</Span>
+		
+		<Span color="String" multiline="true">
+			<Begin color="String">@"</Begin>
+			<End>"</End>
+			<RuleSet>
+				<!-- span for escape sequences -->
+				<Span begin='""' end=""/>
+			</RuleSet>
+		</Span>
+		
+		<!-- don't highlight "@int" as keyword -->
+		<Rule>
+			@[\w\d_]+
+		</Rule>
+		
+		<Keywords color="ThisOrBaseReference">
+			<Word>self</Word>
+			<Word>me</Word>
+		</Keywords>
+
+
+    <Keywords color="AsmKeywords">
+      
+       
+      <Word>EAX</Word>
+      <Word>EBX</Word>
+      <Word>ECX</Word>
+      <Word>EDX</Word>
+   
+      <Word>EDI</Word>
+      <Word>ESI</Word>
+
+      <Word>RAX</Word>
+      <Word>RBX</Word>
+      <Word>RCX</Word>
+      <Word>RDX</Word>
+
+      <Word>RDI</Word>
+      <Word>RSI</Word>
+      
+   
+    
+
+    </Keywords>
+   
+    
+		<Keywords color="TypeKeywords">
+			<Word>as</Word>
+			<Word>is</Word>
+			<Word>new</Word>
+			<Word>sizeof</Word>
+			<Word>typeof</Word>
+      <Word>nameof</Word>
+      <Word>asm</Word>
+			<Word>stackalloc</Word>
+
+
+      <Word>PInt</Word>
+      <Word>PLong</Word>
+      <Word>PShort</Word>
+      <Word>PByte</Word>
+      <Word>PUInt</Word>
+      <Word>PULong</Word>   
+      <Word>PUShort</Word>
+      <Word>PSByte</Word>
+      <Word>PReal</Word>
+      
+      <Word>PSngl</Word>
+      <Word>PDecimal</Word>
+      <Word>PDate</Word>
+
+
+      <Word>AInt</Word>
+      <Word>ALong</Word>
+      <Word>AShort</Word>
+      <Word>AUInt</Word>
+      <Word>AULong</Word>
+      <Word>AUShort</Word>
+      <Word>AReal</Word>
+      <Word>ASngl</Word>
+      <Word>AChar</Word>
+      <Word>ABool</Word>
+      <Word>AStr</Word>
+      <Word>ABytes</Word>
+
+
+      <Word>CInt</Word>
+      <Word>CLong</Word>
+      <Word>CShort</Word>
+      <Word>CUInt</Word>
+      <Word>CULong</Word>
+      <Word>CUShort</Word>
+      <Word>CReal</Word>
+      <Word>CDecimal</Word>
+      <Word>CSngl</Word>
+      <Word>CByte</Word>
+      <Word>CSByte</Word>
+      <Word>CChar</Word>
+      <Word>CBool</Word>
+      <Word>CB64Str</Word>
+      <Word>CB64Chr</Word>
+      <Word>CDate</Word>
+      <Word>CStr</Word>
+		</Keywords>
+		
+		<Keywords color="TrueFalse">
+			<Word>true</Word>
+			<Word>false</Word>
+		</Keywords>
+		
+		<Keywords color="Keywords">
+			<Word>else</Word>
+			<Word>if</Word>
+			<Word>caseof</Word>
+			<Word>val</Word>
+			<Word>default</Word>
+			<Word>do</Word>
+			<Word>for</Word>
+			<Word>foreach</Word>
+			<Word>in</Word>
+			<Word>while</Word>
+			<Word>lock</Word>
+			<Word>global</Word>
+			<Word>dynamic</Word>
+			<Word>await</Word>
+			<Word>where</Word>
+		</Keywords>
+		
+		<Keywords color="GotoKeywords">
+			<Word>leave</Word>
+			<Word>persist</Word>
+			<Word>jmp</Word>
+			<Word>ret</Word>
+			<Word>yield</Word>
+		</Keywords>
+		
+		<Keywords color="QueryKeywords">
+			<Word>select</Word>
+			<Word>group</Word>
+			<Word>by</Word>
+			<Word>into</Word>
+			<Word>from</Word>
+			<Word>ascending</Word>
+			<Word>descending</Word>
+			<Word>orderby</Word>
+			<Word>let</Word>
+			<Word>join</Word>
+			<Word>on</Word>
+			<Word>equals</Word>
+		</Keywords>
+		
+		<Keywords color="ExceptionKeywords">
+			<Word>try</Word>
+      <Word>safe</Word>
+			<Word>throw</Word>
+      <Word>restrict</Word>
+			<Word>loop</Word>
+      <Word>sync</Word>
+      <Word>sym</Word>
+			<Word>except</Word>
+			<Word>finally</Word>
+		</Keywords>
+		
+		<Keywords color="CheckedKeyword">
+			<Word>checked</Word>
+			<Word>unchecked</Word>
+		</Keywords>
+		
+		<Keywords color="UnsafeKeywords">
+			<Word>fixed</Word>
+			<Word>unsafe</Word>
+		</Keywords>
+		
+		<Keywords color="ValueTypeKeywords">
+			<Word>bool</Word>
+			<Word>byte</Word>
+			<Word>char</Word>
+			<Word>decimal</Word>
+			<Word>real</Word>
+			<Word>enum</Word>
+			<Word>float</Word>
+			<Word>integer</Word>
+			<Word>longint</Word>
+			<Word>sbyte</Word>
+			<Word>shortint</Word>
+			<Word>struct</Word>
+			<Word>uinteger</Word>
+			<Word>ushortint</Word>
+			<Word>ulongint</Word>
+      
+      <Word>pointer</Word>
+      <Word>upointer</Word>
+      <Word>date</Word>
+      <Word>time</Word>
+      <Word>guid</Word>
+		</Keywords>
+		
+		<Keywords color="ReferenceTypeKeywords">
+			<Word>class</Word>
+			<Word>interface</Word>
+			<Word>delegate</Word>
+			<Word>object</Word>
+			<Word>string</Word>
+			<Word>sub</Word>
+		</Keywords>
+		
+		<Keywords color="OperatorKeywords">
+			<Word>explicit</Word>
+			<Word>implicit</Word>
+			<Word>operator</Word>
+		</Keywords>
+		
+		<Keywords color="ParameterModifiers">
+			<Word>params</Word>
+			<Word>ref</Word>
+			<Word>out</Word>
+		</Keywords>
+		
+		<Keywords color="Modifiers">
+			<Word>abstract</Word>
+			<Word>const</Word>
+			<Word>event</Word>
+			<Word>native</Word>
+			<Word>override</Word>
+			<Word>readonly</Word>
+			<Word>final</Word>
+			<Word>static</Word>
+			<Word>virt</Word>
+			<Word>volatile</Word>
+			<Word>async</Word>
+			<Word>shared</Word>
+		</Keywords>
+		
+		<Keywords color="Visibility">
+			<Word>public</Word>
+			<Word>protected</Word>
+			<Word>private</Word>
+			<Word>internal</Word>
+		</Keywords>
+		
+		<Keywords color="NamespaceKeywords">
+			<Word>program</Word>
+			<Word>include</Word>
+      <Word>using</Word>
+		</Keywords>
+		
+		<Keywords color="GetSetAddRemove">
+			<Word>get</Word>
+			<Word>set</Word>
+			<Word>add</Word>
+			<Word>remove</Word>
+		</Keywords>
+		
+		<Keywords color="NullOrValueKeywords">
+			<Word>null</Word>
+			<!--<Word>value</Word>-->
+		</Keywords>
+		
+		<!-- Digits -->
+		<Rule color="NumberLiteral">
+			\b0[xX][0-9a-fA-F]+  # hex number
+		|	
+			(	\b\d+(\.[0-9]+)?   #number with optional floating point
+			|	\.[0-9]+           #or just starting with floating point
+			)
+			([eE][+-]?[0-9]+)? # optional exponent
+		</Rule>
+		
+		<Rule color="Punctuation">
+			[?,.;()\[\]{}+\-/%*&lt;&gt;^+~!|&amp;]+
+		</Rule>
+	</RuleSet>
+</SyntaxDefinition>
